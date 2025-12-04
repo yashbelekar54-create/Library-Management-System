@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Engineering College Library Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="manifest" href="#" />
+    <meta name="theme-color" content="#1FB8CD" />
+</head>
+<body>
+    <!-- Welcome/Landing Page -->
+    <div id="welcomePage" class="page active">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <div class="library-logo">📚</div>
+                <h1>Advanced Engineering College</h1>
+                <h2>Smart Library Management System</h2>
+                <p class="welcome-subtitle">Experience the future of library automation with AI-powered features, real-time updates, and seamless digital integration.</p>
+            </div>
+            <div class="welcome-actions">
+                <button id="loginBtn" class="btn btn--primary btn--lg">Login to Your Account</button>
+                <button id="registerBtn" class="btn btn--outline btn--lg">Create New Account</button>
+                <button id="guestBtn" class="btn btn--secondary btn--lg">Browse as Guest</button>
+            </div>
+            <div class="welcome-features">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h4>AI Recommendations</h4>
+                        <p>Smart book suggestions powered by machine learning</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h4>Mobile First</h4>
+                        <p>Seamless experience across all devices</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h4>Real-time Updates</h4>
+                        <p>Live inventory and availability tracking</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h4>RFID Integration</h4>
+                        <p>Contactless book management and tracking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="registrationPage" class="page hidden">
+        <div class="registration-container">
+            <div class="registration-card card">
+                <div class="registration-header">
+                    <h1>Create Your Account</h1>
+                    <div class="progress-indicator">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill" style="width: 25%"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <span id="step1" class="progress-step active">Basic Info</span>
+                            <span id="step2" class="progress-step">Role Details</span>
+                            <span id="step3" class="progress-step">Verification</span>
+                            <span id="step4" class="progress-step">Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__body">
+                    <form id="registrationForm">
+                        <!-- Step 1: Basic Information -->
+                        <div id="regStep1" class="registration-step active">
+                            <h3>Basic Information</h3>
+                            <div class="form-group">
+                                <label class="form-label" for="regName">Full Name *</label>
+                                <input type="text" id="regName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="regEmail">Email Address *</label>
+                                <input type="email" id="regEmail" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="regPhone">Phone Number *</label>
+                                <input type="tel" id="regPhone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="regRole">Account Type *</label>
+                                <select id="regRole" class="form-control" required>
+                                    <option value="">Select Account Type</option>
+                                    <option value="student">Student</option>
+                                    <option value="faculty">Faculty Member</option>
+                                    <option value="staff">Library Staff</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn--secondary" onclick="cancelRegistration()">Cancel</button>
+                                <button type="button" class="btn btn--primary" onclick="nextStep()">Next Step</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Role-Specific Details -->
+                        <div id="regStep2" class="registration-step hidden">
+                            <h3>Account Details</h3>
+                            <div id="studentFields" class="role-fields hidden">
+                                <div class="form-group">
+                                    <label class="form-label" for="studentId">Student ID *</label>
+                                    <input type="text" id="studentId" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="department">Department *</label>
+                                    <select id="department" class="form-control">
+                                        <option value="">Select Department</option>
+                                        <option value="Computer Science">Computer Science & Engineering</option>
+                                        <option value="Mechanical">Mechanical Engineering</option>
+                                        <option value="Electrical">Electrical & Electronics Engineering</option>
+                                        <option value="Civil">Civil Engineering</option>
+                                        <option value="Electronics">Electronics & Communication</option>
+                                        <option value="Chemical">Chemical Engineering</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="year">Current Year *</label>
+                                    <select id="year" class="form-control">
+                                        <option value="">Select Year</option>
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                        <option value="pg">Post Graduate</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="facultyFields" class="role-fields hidden">
+                                <div class="form-group">
+                                    <label class="form-label" for="employeeId">Employee ID *</label>
+                                    <input type="text" id="employeeId" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="facultyDept">Department *</label>
+                                    <select id="facultyDept" class="form-control">
+                                        <option value="">Select Department</option>
+                                        <option value="Computer Science">Computer Science & Engineering</option>
+                                        <option value="Mechanical">Mechanical Engineering</option>
+                                        <option value="Electrical">Electrical & Electronics Engineering</option>
+                                        <option value="Civil">Civil Engineering</option>
+                                        <option value="Electronics">Electronics & Communication</option>
+                                        <option value="Chemical">Chemical Engineering</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="designation">Designation *</label>
+                                    <input type="text" id="designation" class="form-control" placeholder="e.g., Assistant Professor">
+                                </div>
+                            </div>
+                            <div id="staffFields" class="role-fields hidden">
+                                <div class="form-group">
+                                    <label class="form-label" for="staffId">Staff ID *</label>
+                                    <input type="text" id="staffId" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="position">Position *</label>
+                                    <input type="text" id="position" class="form-control" placeholder="e.g., Library Assistant">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn--secondary" onclick="prevStep()">Previous</button>
+                                <button type="button" class="btn btn--primary" onclick="nextStep()">Next Step</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Document Verification -->
+                        <div id="regStep3" class="registration-step hidden">
+                            <h3>Document Verification</h3>
+                            <div class="upload-section">
+                                <div class="upload-item">
+                                    <label class="form-label">Profile Photo *</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="profilePhoto" class="file-input" accept="image/*">
+                                        <label for="profilePhoto" class="file-label">
+                                            <span class="file-icon">📸</span>
+                                            <span class="file-text">Upload Profile Photo</span>
+                                        </label>
+                                        <div id="photoPreview" class="file-preview hidden"></div>
+                                    </div>
+                                </div>
+                                <div class="upload-item">
+                                    <label class="form-label">ID Document *</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="idDocument" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label for="idDocument" class="file-label">
+                                            <span class="file-icon">🆔</span>
+                                            <span class="file-text">Upload ID Document</span>
+                                        </label>
+                                        <div id="idPreview" class="file-preview hidden"></div>
+                                    </div>
+                                </div>
+                                <div class="upload-item">
+                                    <label class="form-label">Proof of Affiliation *</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="affiliationProof" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label for="affiliationProof" class="file-label">
+                                            <span class="file-icon">📄</span>
+                                            <span class="file-text">Upload Proof Document</span>
+                                        </label>
+                                        <div id="affiliationPreview" class="file-preview hidden"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="verification-note">
+                                <div class="note-icon">ℹ️</div>
+                                <p>Your documents will be verified by the library administration. Account activation may take 1-2 business days.</p>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn--secondary" onclick="prevStep()">Previous</button>
+                                <button type="button" class="btn btn--primary" onclick="nextStep()">Upload & Continue</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Preferences & Completion -->
+                        <div id="regStep4" class="registration-step hidden">
+                            <h3>Account Preferences</h3>
+                            <div class="preferences-section">
+                                <div class="form-group">
+                                    <label class="form-label" for="language">Preferred Language</label>
+                                    <select id="language" class="form-control">
+                                        <option value="en">English</option>
+                                        <option value="hi">हिंदी (Hindi)</option>
+                                        <option value="ta">தமிழ் (Tamil)</option>
+                                        <option value="te">తెలుగు (Telugu)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Notification Preferences</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="emailNotif" checked> Email Notifications
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="smsNotif" checked> SMS Notifications
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="pushNotif" checked> Push Notifications
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="interests">Areas of Interest</label>
+                                    <textarea id="interests" class="form-control" rows="3" placeholder="e.g., Machine Learning, Structural Engineering, Digital Signal Processing..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="termsAccept" required> I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn--secondary" onclick="prevStep()">Previous</button>
+                                <button type="submit" class="btn btn--primary">Complete Registration</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page hidden">
+        <div class="login-container">
+            <div class="login-card card">
+                <div class="login-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your library account</p>
+                </div>
+                <div class="card__body">
+                    <div class="social-login">
+                        <button class="btn btn--outline btn--full-width social-btn">
+                            <span class="social-icon">🔍</span> Continue with Google
+                        </button>
+                        <button class="btn btn--outline btn--full-width social-btn">
+                            <span class="social-icon">Ⓜ️</span> Continue with Microsoft
+                        </button>
+                        <div class="divider"><span>or</span></div>
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label class="form-label" for="username">Username or Email</label>
+                            <input type="text" id="username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" id="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe"> Remember me for 30 days
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                        <div class="login-help">
+                            <a href="#" id="forgotPassword">Forgot Password?</a>
+                            <a href="#" onclick="showWelcomePage()">← Back to Home</a>
+                        </div>
+                    </form>
+                    <div class="demo-section">
+                        <h6>Demo Accounts:</h6>
+                        <div class="demo-accounts">
+                            <button class="demo-btn" onclick="fillDemoCredentials('admin')">
+                                <strong>Admin:</strong> admin / admin123
+                            </button>
+                            <button class="demo-btn" onclick="fillDemoCredentials('faculty')">
+                                <strong>Faculty:</strong> faculty / faculty123
+                            </button>
+                            <button class="demo-btn" onclick="fillDemoCredentials('student')">
+                                <strong>Student:</strong> student / student123
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Navigation Header -->
+        <header class="main-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="library-brand">
+                        <div class="brand-icon">📚</div>
+                        <div class="brand-text">
+                            <h2>Smart Library</h2>
+                            <span id="currentUser" class="user-info"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-center">
+                    <div class="global-search">
+                        <input type="text" id="globalSearch" placeholder="Search books, resources, or ask AI..." class="search-input">
+                        <button class="search-btn">🔍</button>
+                        <button class="ai-btn" onclick="toggleAIChat()">🤖</button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="real-time-stats">
+                        <div class="stat-badge">
+                            <span class="stat-icon">👥</span>
+                            <span id="liveUsers">142</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-icon">📚</span>
+                            <span id="liveCheckouts">67</span>
+                        </div>
+                    </div>
+                    <div class="notifications-dropdown">
+                        <button class="btn btn--outline btn--sm" id="notificationsBtn">
+                            <span>🔔</span>
+                            <span id="notificationCount" class="notification-badge">3</span>
+                        </button>
+                        <div id="notificationsDropdown" class="dropdown-content hidden">
+                            <div class="dropdown-header">
+                                <span>Notifications</span>
+                                <button class="btn btn--outline btn--sm">Mark All Read</button>
+                            </div>
+                            <div id="notificationsList"></div>
+                        </div>
+                    </div>
+                    <div class="user-dropdown">
+                        <button class="user-avatar" id="userMenuBtn">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='%231FB8CD'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="User">
+                        </button>
+                        <div id="userDropdown" class="dropdown-content hidden">
+                            <a href="#" onclick="showView('profile')">👤 My Profile</a>
+                            <a href="#" onclick="showView('settings')">⚙️ Settings</a>
+                            <a href="#" onclick="toggleTheme()">🌙 Dark Mode</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" id="logoutBtn">🚪 Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Menu -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="nav-menu" id="navMenu"></div>
+                <div class="nav-extras">
+                    <button class="kiosk-btn" onclick="showKioskInterface()">🖥️ Self-Service</button>
+                    <div class="live-indicator">
+                        <div class="pulse-dot"></div>
+                        <span>Live</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- AI Chat Assistant -->
+        <div id="aiChat" class="ai-chat hidden">
+            <div class="ai-chat-header">
+                <div class="ai-info">
+                    <div class="ai-avatar">🤖</div>
+                    <div>
+                        <h4>LibraryBot</h4>
+                        <span class="ai-status">Online</span>
+                    </div>
+                </div>
+                <button onclick="toggleAIChat()" class="ai-close">×</button>
+            </div>
+            <div class="ai-chat-body" id="aiChatBody">
+                <div class="ai-message">
+                    <div class="message-content">
+                        <p>Hello! I'm your AI library assistant. I can help you find books, check availability, answer questions about library services, and much more!</p>
+                    </div>
+                    <span class="message-time">Just now</span>
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <input type="text" id="aiChatInput" placeholder="Ask me anything about the library..." class="ai-input">
+                <button onclick="sendAIMessage()" class="ai-send">Send</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="view active">
+                <div class="container">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title-section">
+                            <h1 id="dashboardTitle">Smart Dashboard</h1>
+                            <p id="dashboardSubtitle">Real-time library insights and personalized recommendations</p>
+                        </div>
+                        <div class="dashboard-controls">
+                            <select id="dashboardTimeRange" class="form-control">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                            <button class="btn btn--outline btn--sm" onclick="refreshDashboard()">🔄 Refresh</button>
+                        </div>
+                    </div>
+                    <div id="dashboardContent" class="dashboard-content"></div>
+                </div>
+            </div>
+
+            <!-- Books/Catalog View -->
+            <div id="booksView" class="view hidden">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>Smart Book Catalog</h1>
+                        <div class="header-actions">
+                            <button id="scanBookBtn" class="btn btn--outline">📱 Scan Book</button>
+                            <button id="addBookBtn" class="btn btn--primary admin-only hidden">+ Add Book</button>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-controls">
+                        <div class="search-section">
+                            <div class="search-bar">
+                                <input type="text" id="bookSearch" class="form-control" placeholder="Search by title, author, ISBN, or ask AI to find books for you...">
+                                <div class="search-suggestions" id="searchSuggestions"></div>
+                            </div>
+                            <div class="ai-search-toggle">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="aiSearchMode"> AI-Powered Search
+                                </label>
+                            </div>
+                        </div>
+                        <div class="filters-section">
+                            <select id="categoryFilter" class="form-control">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="statusFilter" class="form-control">
+                                <option value="">All Status</option>
+                                <option value="Available">Available</option>
+                                <option value="Issued">Issued</option>
+                                <option value="Reserved">Reserved</option>
+                            </select>
+                            <select id="sortBy" class="form-control">
+                                <option value="title">Sort by Title</option>
+                                <option value="author">Sort by Author</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="recent">Recently Added</option>
+                                <option value="rating">Highest Rated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="catalog-tabs">
+                        <button class="catalog-tab active" data-tab="all">All Books</button>
+                        <button class="catalog-tab" data-tab="available">Available</button>
+                        <button class="catalog-tab" data-tab="trending">Trending</button>
+                        <button class="catalog-tab" data-tab="recommended">For You</button>
+                    </div>
+
+                    <div id="booksGrid" class="books-grid"></div>
+                    <div id="loadMoreBooks" class="load-more hidden">
+                        <button class="btn btn--outline btn--full-width">Load More Books</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Circulation View -->
+            <div id="circulationView" class="view hidden admin-only">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>Real-time Circulation</h1>
+                        <div class="header-stats">
+                            <div class="stat-mini">
+                                <span class="stat-value" id="todayIssues">67</span>
+                                <span class="stat-label">Today's Issues</span>
+                            </div>
+                            <div class="stat-mini">
+                                <span class="stat-value" id="todayReturns">43</span>
+                                <span class="stat-label">Today's Returns</span>
+                            </div>
+                            <div class="stat-mini">
+                                <span class="stat-value" id="overdueCount">89</span>
+                                <span class="stat-label">Overdue</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="circulation-dashboard">
+                        <div class="circulation-controls">
+                            <div class="rfid-section">
+                                <h3>RFID Scanner</h3>
+                                <div class="rfid-interface">
+                                    <div class="rfid-status" id="rfidStatus">
+                                        <div class="rfid-indicator inactive"></div>
+                                        <span>Scanner Ready</span>
+                                    </div>
+                                    <button class="btn btn--primary" onclick="simulateRFIDScan()">Simulate RFID Scan</button>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-actions">
+                                <h3>Quick Actions</h3>
+                                <div class="action-buttons">
+                                    <button class="action-btn issue" onclick="showQuickIssue()">
+                                        <span class="action-icon">📚</span>
+                                        <span>Issue Book</span>
+                                    </button>
+                                    <button class="action-btn return" onclick="showQuickReturn()">
+                                        <span class="action-icon">📖</span>
+                                        <span>Return Book</span>
+                                    </button>
+                                    <button class="action-btn renew" onclick="showRenewals()">
+                                        <span class="action-icon">🔄</span>
+                                        <span>Renewals</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="live-circulation">
+                            <h3>Live Activity Feed</h3>
+                            <div id="liveActivityFeed" class="activity-feed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Self-Service Kiosk Interface -->
+            <div id="kioskView" class="view hidden">
+                <div class="kiosk-interface">
+                    <div class="kiosk-header">
+                        <h1>Self-Service Kiosk</h1>
+                        <div class="kiosk-help">
+                            <button class="btn btn--outline">❓ Help</button>
+                            <button class="btn btn--secondary" onclick="exitKiosk()">← Exit Kiosk</button>
+                        </div>
+                    </div>
+                    
+                    <div class="kiosk-content">
+                        <div class="kiosk-options">
+                            <div class="kiosk-option" onclick="kioskAction('checkout')">
+                                <div class="kiosk-icon">📚</div>
+                                <h3>Check Out Books</h3>
+                                <p>Scan your library card and books to check out</p>
+                            </div>
+                            <div class="kiosk-option" onclick="kioskAction('return')">
+                                <div class="kiosk-icon">📖</div>
+                                <h3>Return Books</h3>
+                                <p>Scan books to return them to the library</p>
+                            </div>
+                            <div class="kiosk-option" onclick="kioskAction('renew')">
+                                <div class="kiosk-icon">🔄</div>
+                                <h3>Renew Books</h3>
+                                <p>Extend the due date of your current loans</p>
+                            </div>
+                            <div class="kiosk-option" onclick="kioskAction('pay')">
+                                <div class="kiosk-icon">💳</div>
+                                <h3>Pay Fines</h3>
+                                <p>Pay outstanding fines using card or mobile payment</p>
+                            </div>
+                        </div>
+                        
+                        <div id="kioskAction" class="kiosk-action-panel hidden">
+                            <div class="action-content" id="kioskActionContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Library View -->
+            <div id="digitalView" class="view hidden">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>Digital Library & E-Resources</h1>
+                        <div class="header-actions">
+                            <button class="btn btn--outline">📊 Usage Analytics</button>
+                            <button class="btn btn--primary">🔍 Advanced Search</button>
+                        </div>
+                    </div>
+                    
+                    <div class="digital-dashboard">
+                        <div class="digital-stats">
+                            <div class="digital-stat">
+                                <span class="stat-number">5,670</span>
+                                <span class="stat-label">Digital Resources</span>
+                            </div>
+                            <div class="digital-stat">
+                                <span class="stat-number">25.4K</span>
+                                <span class="stat-label">Monthly Downloads</span>
+                            </div>
+                            <div class="digital-stat">
+                                <span class="stat-number">98%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                        </div>
+                        
+                        <div class="digital-categories">
+                            <div class="category-tabs">
+                                <button class="category-tab active" data-category="all">All Resources</button>
+                                <button class="category-tab" data-category="Database">Databases</button>
+                                <button class="category-tab" data-category="E-Journal">E-Journals</button>
+                                <button class="category-tab" data-category="E-Book">E-Books</button>
+                                <button class="category-tab" data-category="Standards">Standards</button>
+                                <button class="category-tab" data-category="Thesis">Thesis Repository</button>
+                            </div>
+                        </div>
+                        
+                        <div id="digitalResourcesGrid" class="digital-resources-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports & Analytics View -->
+            <div id="reportsView" class="view hidden">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>Analytics & Reports</h1>
+                        <div class="header-actions">
+                            <button class="btn btn--outline">📅 Schedule Report</button>
+                            <button class="btn btn--outline">📤 Export Data</button>
+                            <button class="btn btn--primary">🔄 Real-time Mode</button>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-dashboard">
+                        <div class="analytics-controls">
+                            <select class="form-control">
+                                <option>Last 7 days</option>
+                                <option>Last 30 days</option>
+                                <option>Last 3 months</option>
+                                <option>Last year</option>
+                            </select>
+                            <button class="btn btn--outline">Custom Range</button>
+                        </div>
+                        
+                        <div class="reports-grid">
+                            <div class="report-card card">
+                                <div class="card-header">
+                                    <h3>Live Circulation Trends</h3>
+                                    <div class="live-indicator">
+                                        <div class="pulse-dot"></div>
+                                        <span>Live</span>
+                                    </div>
+                                </div>
+                                <div class="card__body">
+                                    <div class="chart-container" style="position: relative; height: 300px">
+                                        <canvas id="liveCirculationChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="report-card card">
+                                <div class="card-header">
+                                    <h3>Popular Resources</h3>
+                                </div>
+                                <div class="card__body">
+                                    <div class="chart-container" style="position: relative; height: 300px">
+                                        <canvas id="popularResourcesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="report-card card">
+                                <div class="card-header">
+                                    <h3>User Engagement</h3>
+                                </div>
+                                <div class="card__body">
+                                    <div class="chart-container" style="position: relative; height: 300px">
+                                        <canvas id="userEngagementChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="report-card card">
+                                <div class="card-header">
+                                    <h3>Real-time Metrics</h3>
+                                </div>
+                                <div class="card__body">
+                                    <div class="metrics-grid">
+                                        <div class="metric-item">
+                                            <span class="metric-value" id="liveMetricUsers">142</span>
+                                            <span class="metric-label">Active Users</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-value" id="liveMetricCheckouts">67</span>
+                                            <span class="metric-label">Today's Checkouts</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-value" id="liveMetricReturns">43</span>
+                                            <span class="metric-label">Today's Returns</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-value" id="liveMetricReservations">29</span>
+                                            <span class="metric-label">New Reservations</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="settingsView" class="view hidden">
+                <div class="container">
+                    <div class="page-header">
+                        <h1>System Settings</h1>
+                    </div>
+                    
+                    <div class="settings-sections">
+                        <div class="settings-nav">
+                            <button class="settings-nav-btn active" data-section="general">General</button>
+                            <button class="settings-nav-btn" data-section="notifications">Notifications</button>
+                            <button class="settings-nav-btn" data-section="security">Security</button>
+                            <button class="settings-nav-btn" data-section="integration">Integrations</button>
+                            <button class="settings-nav-btn admin-only" data-section="system">System</button>
+                        </div>
+                        
+                        <div class="settings-content">
+                            <div id="generalSettings" class="settings-panel active">
+                                <h3>General Settings</h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label class="form-label">Interface Language</label>
+                                        <select class="form-control">
+                                            <option value="en">English</option>
+                                            <option value="hi">हिंदी (Hindi)</option>
+                                            <option value="ta">தமிழ் (Tamil)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Theme Preference</label>
+                                        <select class="form-control">
+                                            <option value="auto">Auto (System)</option>
+                                            <option value="light">Light Mode</option>
+                                            <option value="dark">Dark Mode</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked> Enable real-time updates
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked> Show advanced features
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="notificationSettings" class="settings-panel hidden">
+                                <h3>Notification Settings</h3>
+                                <div class="settings-form">
+                                    <div class="notification-category">
+                                        <h4>Due Date Reminders</h4>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked> Email notifications
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked> SMS notifications
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked> Push notifications
+                                        </label>
+                                    </div>
+                                    <div class="notification-category">
+                                        <h4>System Updates</h4>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked> New book arrivals
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox"> System maintenance alerts
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Registration Success Modal -->
+    <div id="registrationSuccessModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="success-icon">✅</div>
+                <h2>Registration Successful!</h2>
+                <p>Your account has been created successfully. Please check your email for verification instructions.</p>
+                <p><strong>Account Status:</strong> Pending Approval</p>
+                <div class="form-actions">
+                    <button class="btn btn--primary" onclick="closeModal()">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+            <button class="toast-close" id="toastClose">×</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
